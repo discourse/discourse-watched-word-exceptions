@@ -1,0 +1,8 @@
+en:
+  admin_js:
+    admin:
+      watched_words:
+        actions: 
+          exceptions: Exceptions
+        action_descriptions:
+          exceptions: Words in this list are used as exceptions for all other watched word types
