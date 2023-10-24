@@ -20,16 +20,20 @@ after_initialize do
     WatchedWord.singleton_class.prepend WatchedWordExtension
 
     module WordWatcherExtension
-      def word_matcher_regexp(action, *args)
+      def word_matcher_regexp_list(action, **kwargs)
         return super unless SiteSetting.watched_word_exceptions_enabled
-        existing_regex = super
-        return existing_regex if action.to_sym == :exceptions || existing_regex.nil?
+        existing_regexes = super(action, **kwargs)
+        return existing_regexes if action.to_sym == :exceptions || existing_regexes.empty?
 
-        exception_regex = self.word_matcher_regexp(:exceptions)
-        return existing_regex if exception_regex.nil?
+        exception_regexes = self.word_matcher_regexp_list(:exceptions, **kwargs)
+        return existing_regexes if !exception_regexes.present?
 
-        new_regex_string = "(?!#{exception_regex.source})(?:#{existing_regex.source})"
-        Regexp.new(new_regex_string, Regexp::IGNORECASE)
+        exception_regex = exception_regexes.map(&:source).join("|")
+
+        existing_regexes.map do |existing_regex|
+          new_regex_string = "(?!#{exception_regex})(?:#{existing_regex.source})"
+          Regexp.new(new_regex_string, existing_regex.options)
+        end
       end
     end
 
