@@ -1,0 +1,7 @@
+{
+  "name": "discourse-watched-word-exceptions",
+  "private": true,
+  "devDependencies": {
+    "eslint-config-discourse": "^3.1.0"
+  }
+}
