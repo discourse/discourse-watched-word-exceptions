@@ -13,9 +13,7 @@ after_initialize do
     module WatchedWordExtension
       def actions
         return super unless SiteSetting.watched_word_exceptions_enabled
-        @amended_actions ||= super.tap do | enum |
-          enum.update(exceptions: 99)
-        end
+        @amended_actions ||= super.tap { |enum| enum.update(exceptions: 99) }
       end
     end
 
@@ -31,12 +29,10 @@ after_initialize do
         return existing_regex if exception_regex.nil?
 
         new_regex_string = "(?!#{exception_regex.source})(?:#{existing_regex.source})"
-        return Regexp.new(new_regex_string, Regexp::IGNORECASE)
+        Regexp.new(new_regex_string, Regexp::IGNORECASE)
       end
     end
 
     WordWatcher.singleton_class.prepend WordWatcherExtension
-
   end
-
 end

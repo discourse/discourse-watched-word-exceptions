@@ -1,0 +1,10 @@
+{
+  "name": "discourse-watched-word-exceptions",
+  "private": true,
+  "devDependencies": {
+    "@discourse/lint-configs": "^1.0.0",
+    "ember-template-lint": "^5.11.2",
+    "eslint": "^8.51.0",
+    "prettier": "^2.8.8"
+  }
+}
