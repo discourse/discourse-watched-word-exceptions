@@ -20,12 +20,12 @@ after_initialize do
     WatchedWord.singleton_class.prepend WatchedWordExtension
 
     module WordWatcherExtension
-      def word_matcher_regexp_list(action, **kwargs)
+      def compiled_regexps_for_action(action, **kwargs)
         return super unless SiteSetting.watched_word_exceptions_enabled
         existing_regexes = super(action, **kwargs)
         return existing_regexes if action.to_sym == :exceptions || existing_regexes.empty?
 
-        exception_regexes = self.word_matcher_regexp_list(:exceptions, **kwargs)
+        exception_regexes = self.compiled_regexps_for_action(:exceptions, **kwargs)
         return existing_regexes if !exception_regexes.present?
 
         exception_regex = exception_regexes.map(&:source).join("|")
