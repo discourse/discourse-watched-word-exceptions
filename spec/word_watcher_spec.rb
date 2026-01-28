@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require "rails_helper"
 
 describe WordWatcher do
   before { SiteSetting.watched_word_exceptions_enabled = true }
